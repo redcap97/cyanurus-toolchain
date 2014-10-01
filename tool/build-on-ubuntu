@@ -5,18 +5,84 @@ set -ex
 BUILD_PATH="/tmp/cyanurus-$$"
 INSTALL_PATH="/tmp/cyanurus"
 
-BINUTILS_URL="http://ftp.gnu.org/gnu/binutils/binutils-2.24.tar.bz2"
-GCC_URL="http://ftp.gnu.org/gnu/gcc/gcc-4.9.1/gcc-4.9.1.tar.bz2"
-GDB_URL="http://ftp.gnu.org/gnu/gdb/gdb-7.8.tar.xz"
-UTIL_LINUX_URL="http://ftp.kernel.org/pub/linux/utils/util-linux/v2.25/util-linux-2.25.1.tar.xz"
-
 JOBS="$(grep processor /proc/cpuinfo | wc -l)"
 BUILD_OPTION="--prefix=${INSTALL_PATH}"
+
+GCC_VERSION="4.9.1"
+
+CYANURUS_GIT="git://git.local/cyanurus.git"
+BINUTILS_URL="http://ftp.gnu.org/gnu/binutils/binutils-2.24.tar.bz2"
+GCC_URL="http://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.bz2"
+GDB_URL="http://ftp.gnu.org/gnu/gdb/gdb-7.8.tar.xz"
+UTIL_LINUX_URL="http://ftp.kernel.org/pub/linux/utils/util-linux/v2.25/util-linux-2.25.1.tar.xz"
+MUSL_URL="http://www.musl-libc.org/releases/musl-1.1.4.tar.gz"
+
+export PATH=/tmp/cyanurus/bin:/tmp/cyanurus/sbin:$PATH
 
 if [ -d "${INSTALL_PATH}" ]; then
   echo "The directory already exists: ${INSTALL_PATH}" >&2
   exit 1
 fi
+
+install-binutils() {
+  arch=$1
+
+  mkdir ${arch}-binutils
+  pushd ${arch}-binutils
+  ../binutils/configure ${BUILD_OPTION} --target=${arch} --disable-nls --disable-werror
+  make -j${JOBS}
+  make install
+  popd
+}
+
+install-gcc() {
+  arch=$1
+
+  mkdir ${arch}-gcc
+  pushd ${arch}-gcc
+  ../gcc/configure ${BUILD_OPTION} --target=${arch} --disable-nls --disable-threads --disable-shared --disable-libssp --enable-languages=c
+  make -j${JOBS}
+  make install
+  popd
+}
+
+install-gdb() {
+  arch=$1
+
+  mkdir ${arch}-gdb
+  pushd ${arch}-gdb
+  ../gdb/configure ${BUILD_OPTION} --target=${arch}
+  make -j${JOBS}
+  make install
+  popd
+}
+
+install-crt() {
+  arch=$1
+
+  pushd cyanurus
+  make -j${JOBS}
+  cp build/src/user/crt/crt0.o ${INSTALL_PATH}/lib/gcc/${arch}/${GCC_VERSION}/crt0.o
+  popd
+}
+
+install-musl() {
+  arch=$1
+
+  pushd musl
+  CC="${arch}-gcc" CFLAGS="-Os -march=armv7-a -mfloat-abi=soft -marm" ./configure --disable-shared --prefix=${INSTALL_PATH}/${arch}
+  make -j${JOBS}
+  make install
+  popd
+}
+
+install-util-linux() {
+  pushd util-linux
+  ./configure ${BUILD_OPTION} --disable-all-programs --enable-minix --disable-bash-completion
+  make -j${JOBS}
+  make install
+  popd
+}
 
 mkdir ${INSTALL_PATH}
 
@@ -27,6 +93,9 @@ wget ${BINUTILS_URL} -O binutils.tar.bz2
 wget ${GCC_URL} -O gcc.tar.bz2
 wget ${GDB_URL} -O gdb.tar.xz
 wget ${UTIL_LINUX_URL} -O util-linux.tar.xz
+wget ${MUSL_URL} -O musl.tar.gz
+
+git clone --recursive ${CYANURUS_GIT}
 
 tar jxfv binutils.tar.bz2
 mv binutils-* binutils
@@ -40,32 +109,20 @@ mv gdb-* gdb
 tar Jxfv util-linux.tar.xz
 mv util-linux-* util-linux
 
-mkdir arm-none-eabi-binutils
-pushd arm-none-eabi-binutils
-../binutils/configure ${BUILD_OPTION} --target=arm-none-eabi --disable-nls --disable-werror
-make -j${JOBS}
-make install
-popd
+tar zxfv musl.tar.gz
+mv musl-* musl
 
-mkdir arm-none-eabi-gcc
-pushd arm-none-eabi-gcc
-../gcc/configure ${BUILD_OPTION} --target=arm-none-eabi --disable-nls --disable-threads --disable-shared --disable-libssp --enable-languages=c
-make -j${JOBS}
-make install
-popd
+install-binutils arm-none-eabi
+install-gcc arm-none-eabi
+install-gdb arm-none-eabi
 
-mkdir arm-none-eabi-gdb
-pushd arm-none-eabi-gdb
-../gdb/configure ${BUILD_OPTION} --target=arm-none-eabi
-make -j${JOBS}
-make install
-popd
+install-util-linux
 
-pushd util-linux
-./configure ${BUILD_OPTION} --disable-all-programs --enable-minix --disable-bash-completion
-make -j${JOBS}
-make install
-popd
+install-binutils arm-cyanurus-eabi
+install-gcc arm-cyanurus-eabi
+install-gdb arm-cyanurus-eabi
+install-crt arm-cyanurus-eabi
+install-musl arm-cyanurus-eabi
 
 popd
 rm -rf ${BUILD_PATH}
