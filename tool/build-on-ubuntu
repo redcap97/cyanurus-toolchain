@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+set -ex
+
+BUILD_PATH="/tmp/cyanurus-$$"
+INSTALL_PATH="/tmp/cyanurus"
+
+BINUTILS_URL="http://ftp.gnu.org/gnu/binutils/binutils-2.24.tar.bz2"
+GCC_URL="http://ftp.gnu.org/gnu/gcc/gcc-4.9.1/gcc-4.9.1.tar.bz2"
+
+JOBS="$(grep processor /proc/cpuinfo | wc -l)"
+BUILD_OPTION="--prefix=${INSTALL_PATH}"
+
+if [ -d "${INSTALL_PATH}" ]; then
+  echo "The directory already exists: ${INSTALL_PATH}" >&2
+  exit 1
+fi
+
+mkdir ${INSTALL_PATH}
+
+mkdir ${BUILD_PATH}
+pushd ${BUILD_PATH}
+
+wget ${BINUTILS_URL} -O binutils.tar.bz2
+wget ${GCC_URL} -O gcc.tar.bz2
+
+tar jxfv binutils.tar.bz2
+mv binutils-* binutils
+
+tar jxfv gcc.tar.bz2
+mv gcc-* gcc
+
+mkdir arm-none-eabi-binutils
+pushd arm-none-eabi-binutils
+../binutils/configure ${BUILD_OPTION} --target=arm-none-eabi --disable-nls --disable-werror
+make -j${JOBS}
+make install
+popd
+
+mkdir arm-none-eabi-gcc
+pushd arm-none-eabi-gcc
+../gcc/configure ${BUILD_OPTION} --target=arm-none-eabi --disable-nls --disable-threads --disable-shared --disable-libssp --enable-languages=c
+make -j${JOBS}
+make install
+popd
+
+popd
+rm -rf ${BUILD_PATH}
