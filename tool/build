@@ -154,3 +154,5 @@ install-musl arm-cyanurus-eabi
 
 popd
 rm -rf ${BUILD_PATH}
+
+install -m 0755 bin/* ${INSTALL_PATH}/bin

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+export PATH=/opt/cyanurus/bin:/opt/cyanurus/sbin:$PATH
+exec "$@"
