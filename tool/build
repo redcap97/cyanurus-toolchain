@@ -67,6 +67,7 @@ install-crt() {
 
   pushd cyanurus
   make -j${JOBS}
+  make test
   install -m 0644 build/src/user/crt/crt0.o ${INSTALL_PATH}/lib/gcc/${arch}/${GCC_VERSION}/crt0.o
   popd
 }
@@ -102,6 +103,14 @@ install-ruby() {
   ./configure ${BUILD_OPTION} --disable-install-doc
   make -j${JOBS}
   make install
+  popd
+}
+
+test-toolchain() {
+  pushd cyanurus
+  make clean
+  make -j${JOBS} CYANURUS_CC=arm-cyanurus-eabi-gcc
+  make test
   popd
 }
 
@@ -148,6 +157,8 @@ install-gcc arm-cyanurus-eabi
 install-gdb arm-cyanurus-eabi
 install-crt arm-cyanurus-eabi
 install-musl arm-cyanurus-eabi
+
+test-toolchain
 
 popd
 rm -rf ${BUILD_PATH}
