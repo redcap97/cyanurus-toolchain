@@ -14,7 +14,7 @@ MUSL_VERSION="v1.1.4"
 
 CYANURUS_URL="git://git.local/cyanurus.git"
 QEMU_URL="git://git.qemu.org/qemu.git"
-MUSL_URL="git://git.musl-libc.org/musl.git"
+MUSL_URL="git://git.musl-libc.org/musl"
 
 BINUTILS_URL="http://ftp.gnu.org/gnu/binutils/binutils-2.24.tar.bz2"
 GCC_URL="http://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.bz2"
