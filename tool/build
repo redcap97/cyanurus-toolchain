@@ -9,14 +9,17 @@ JOBS="$(grep processor /proc/cpuinfo | wc -l)"
 BUILD_OPTION="--prefix=${INSTALL_PATH}"
 
 GCC_VERSION="4.9.1"
+QEMU_VERSION="v2.1.2"
+MUSL_VERSION="v1.1.4"
 
-CYANURUS_GIT="git://git.local/cyanurus.git"
+CYANURUS_URL="git://git.local/cyanurus.git"
+QEMU_URL="git://git.qemu.org/qemu.git"
+MUSL_URL="git://git.musl-libc.org/musl.git"
+
 BINUTILS_URL="http://ftp.gnu.org/gnu/binutils/binutils-2.24.tar.bz2"
 GCC_URL="http://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.bz2"
 GDB_URL="http://ftp.gnu.org/gnu/gdb/gdb-7.8.tar.xz"
 UTIL_LINUX_URL="http://ftp.kernel.org/pub/linux/utils/util-linux/v2.25/util-linux-2.25.1.tar.xz"
-MUSL_URL="http://www.musl-libc.org/releases/musl-1.1.4.tar.gz"
-QEMU_URL="http://wiki.qemu-project.org/download/qemu-2.1.2.tar.bz2"
 RUBY_URL="http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.3.tar.gz"
 
 export PATH=${INSTALL_PATH}/bin:${INSTALL_PATH}/sbin:$PATH
@@ -111,11 +114,11 @@ wget ${BINUTILS_URL} -O binutils.tar.bz2
 wget ${GCC_URL} -O gcc.tar.bz2
 wget ${GDB_URL} -O gdb.tar.xz
 wget ${UTIL_LINUX_URL} -O util-linux.tar.xz
-wget ${MUSL_URL} -O musl.tar.gz
-wget ${QEMU_URL} -O qemu.tar.bz2
 wget ${RUBY_URL} -O ruby.tar.gz
 
-git clone --recursive ${CYANURUS_GIT}
+git clone --recursive ${CYANURUS_URL}
+git clone --branch ${QEMU_VERSION} --recursive ${QEMU_URL}
+git clone --branch ${MUSL_VERSION} --recursive ${MUSL_URL}
 
 tar jxfv binutils.tar.bz2
 mv binutils-* binutils
@@ -128,12 +131,6 @@ mv gdb-* gdb
 
 tar Jxfv util-linux.tar.xz
 mv util-linux-* util-linux
-
-tar zxfv musl.tar.gz
-mv musl-* musl
-
-tar jxfv qemu.tar.bz2
-mv qemu-* qemu
 
 tar zxfv ruby.tar.gz
 mv ruby-* ruby
