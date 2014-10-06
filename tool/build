@@ -9,8 +9,8 @@ JOBS="$(grep processor /proc/cpuinfo | wc -l)"
 BUILD_OPTION="--prefix=${INSTALL_PATH}"
 
 GCC_VERSION="4.9.1"
-QEMU_VERSION="v2.1.2"
-MUSL_VERSION="v1.1.4"
+QEMU_VERSION="${QEMU_VERSION:-v2.1.2}"
+MUSL_VERSION="${MUSL_VERSION:-v1.1.4}"
 
 CYANURUS_URL="git://git.local/cyanurus.git"
 QEMU_URL="git://git.qemu.org/qemu.git"
