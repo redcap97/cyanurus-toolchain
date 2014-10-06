@@ -1,6 +1,6 @@
 INSTALL_PATH="/opt/cyanurus"
 
-.PHONY: all
+.PHONY: all setup
 
 all:
 	tool/build
