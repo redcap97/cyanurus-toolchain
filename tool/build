@@ -119,29 +119,29 @@ rm -rf ${INSTALL_PATH}/*
 mkdir ${BUILD_PATH}
 pushd ${BUILD_PATH}
 
-wget ${BINUTILS_URL} -O binutils.tar.bz2
-wget ${GCC_URL} -O gcc.tar.bz2
-wget ${GDB_URL} -O gdb.tar.xz
-wget ${UTIL_LINUX_URL} -O util-linux.tar.xz
-wget ${RUBY_URL} -O ruby.tar.gz
+wget ${BINUTILS_URL} --no-verbose -O binutils.tar.bz2
+wget ${GCC_URL} --no-verbose -O gcc.tar.bz2
+wget ${GDB_URL} --no-verbose -O gdb.tar.xz
+wget ${UTIL_LINUX_URL} --no-verbose -O util-linux.tar.xz
+wget ${RUBY_URL} --no-verbose -O ruby.tar.gz
 
 git clone --recursive ${CYANURUS_URL}
 git clone --branch ${QEMU_VERSION} --recursive ${QEMU_URL}
 git clone --branch ${MUSL_VERSION} --recursive ${MUSL_URL}
 
-tar jxfv binutils.tar.bz2
+tar jxf binutils.tar.bz2
 mv binutils-* binutils
 
-tar jxfv gcc.tar.bz2
+tar jxf gcc.tar.bz2
 mv gcc-* gcc
 
-tar Jxfv gdb.tar.xz
+tar Jxf gdb.tar.xz
 mv gdb-* gdb
 
-tar Jxfv util-linux.tar.xz
+tar Jxf util-linux.tar.xz
 mv util-linux-* util-linux
 
-tar zxfv ruby.tar.gz
+tar zxf ruby.tar.gz
 mv ruby-* ruby
 
 install-binutils arm-none-eabi
