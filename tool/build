@@ -31,9 +31,9 @@ if [ ! -d "${INSTALL_PATH}" ]; then
 fi
 
 fetch-tarball() {
-  url=$1
-  name=$2
-  cache="${CACHE_PATH}/$(basename ${url})"
+  local url=$1
+  local name=$2
+  local cache="${CACHE_PATH}/$(basename ${url})"
 
   if [ ! -f ${cache} ]; then
     wget ${url} --no-verbose -O ${cache}
@@ -44,10 +44,10 @@ fetch-tarball() {
 }
 
 fetch-git-repository() {
-  url=$1
-  name=$2
-  version=$3
-  cache="${CACHE_PATH}/${name}"
+  local url=$1
+  local name=$2
+  local version=$3
+  local cache="${CACHE_PATH}/${name}"
 
   if [ -d ${cache} ]; then
     pushd ${cache}
@@ -69,7 +69,7 @@ fetch-git-repository() {
 }
 
 install-binutils() {
-  arch=$1
+  local arch=$1
 
   mkdir ${arch}-binutils
   pushd ${arch}-binutils
@@ -80,7 +80,7 @@ install-binutils() {
 }
 
 install-gcc() {
-  arch=$1
+  local arch=$1
 
   mkdir ${arch}-gcc
   pushd ${arch}-gcc
@@ -91,7 +91,7 @@ install-gcc() {
 }
 
 install-gdb() {
-  arch=$1
+  local arch=$1
 
   mkdir ${arch}-gdb
   pushd ${arch}-gdb
@@ -102,7 +102,7 @@ install-gdb() {
 }
 
 install-crt() {
-  arch=$1
+  local arch=$1
 
   pushd cyanurus
   make -j${JOBS}
@@ -112,7 +112,7 @@ install-crt() {
 }
 
 install-musl() {
-  arch=$1
+  local arch=$1
 
   pushd musl
   CC="${arch}-gcc" CFLAGS="-Os -march=armv7-a -mfloat-abi=soft -marm" ./configure --disable-shared --prefix=${INSTALL_PATH}/${arch}
@@ -170,18 +170,18 @@ fetch-git-repository ${QEMU_URL}     qemu     ${QEMU_VERSION}
 fetch-git-repository ${MUSL_URL}     musl     ${MUSL_VERSION}
 
 install-binutils arm-none-eabi
-install-gcc arm-none-eabi
-install-gdb arm-none-eabi
+install-gcc      arm-none-eabi
+install-gdb      arm-none-eabi
 
 install-util-linux
 install-qemu
 install-ruby
 
 install-binutils arm-cyanurus-eabi
-install-gcc arm-cyanurus-eabi
-install-gdb arm-cyanurus-eabi
-install-crt arm-cyanurus-eabi
-install-musl arm-cyanurus-eabi
+install-gcc      arm-cyanurus-eabi
+install-gdb      arm-cyanurus-eabi
+install-crt      arm-cyanurus-eabi
+install-musl     arm-cyanurus-eabi
 
 test-toolchain
 
