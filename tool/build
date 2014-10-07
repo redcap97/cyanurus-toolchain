@@ -4,6 +4,7 @@ set -ex
 
 BUILD_PATH="/tmp/cyanurus-$$"
 INSTALL_PATH="/opt/cyanurus"
+CACHE_PATH="/tmp/cyanurus-cache"
 
 JOBS="$(grep processor /proc/cpuinfo | wc -l)"
 BUILD_OPTION="--prefix=${INSTALL_PATH}"
@@ -28,6 +29,44 @@ if [ ! -d "${INSTALL_PATH}" ]; then
   echo "The directory doesn't exists: ${INSTALL_PATH}" >&2
   exit 1
 fi
+
+fetch-tarball() {
+  url=$1
+  name=$2
+  cache="${CACHE_PATH}/$(basename ${url})"
+
+  if [ ! -f ${cache} ]; then
+    wget ${url} --no-verbose -O ${cache}
+  fi
+
+  tar xf ${cache}
+  mv ${name}-* ${name}
+}
+
+fetch-git-repository() {
+  url=$1
+  name=$2
+  version=$3
+  cache="${CACHE_PATH}/${name}"
+
+  if [ -d ${cache} ]; then
+    pushd ${cache}
+    git fetch origin
+    git reset --hard origin/master
+    git clean -x -f -f -d
+    git submodule update --init
+    popd
+  else
+    git clone --recursive ${url} ${cache}
+  fi
+
+  cp -r ${cache} ${name}
+  pushd ${name}
+  git checkout ${version} -b build
+  git clean -x -f -f -d
+  git submodule update --init
+  popd
+}
 
 install-binutils() {
   arch=$1
@@ -114,35 +153,21 @@ test-toolchain() {
   popd
 }
 
+mkdir -p ${CACHE_PATH}
 rm -rf ${INSTALL_PATH}/*
 
 mkdir ${BUILD_PATH}
 pushd ${BUILD_PATH}
 
-wget ${BINUTILS_URL} --no-verbose -O binutils.tar.bz2
-wget ${GCC_URL} --no-verbose -O gcc.tar.bz2
-wget ${GDB_URL} --no-verbose -O gdb.tar.xz
-wget ${UTIL_LINUX_URL} --no-verbose -O util-linux.tar.xz
-wget ${RUBY_URL} --no-verbose -O ruby.tar.gz
+fetch-tarball ${BINUTILS_URL}   binutils
+fetch-tarball ${GCC_URL}        gcc
+fetch-tarball ${GDB_URL}        gdb
+fetch-tarball ${UTIL_LINUX_URL} util-linux
+fetch-tarball ${RUBY_URL}       ruby
 
-git clone --recursive ${CYANURUS_URL}
-git clone --branch ${QEMU_VERSION} --recursive ${QEMU_URL}
-git clone --branch ${MUSL_VERSION} --recursive ${MUSL_URL}
-
-tar jxf binutils.tar.bz2
-mv binutils-* binutils
-
-tar jxf gcc.tar.bz2
-mv gcc-* gcc
-
-tar Jxf gdb.tar.xz
-mv gdb-* gdb
-
-tar Jxf util-linux.tar.xz
-mv util-linux-* util-linux
-
-tar zxf ruby.tar.gz
-mv ruby-* ruby
+fetch-git-repository ${CYANURUS_URL} cyanurus master
+fetch-git-repository ${QEMU_URL}     qemu     ${QEMU_VERSION}
+fetch-git-repository ${MUSL_URL}     musl     ${MUSL_VERSION}
 
 install-binutils arm-none-eabi
 install-gcc arm-none-eabi
