@@ -65,6 +65,7 @@ fetch-git-repository() {
   git checkout ${version} -b build
   git clean -x -f -f -d
   git submodule update --init
+  git log --oneline | head -1
   popd
 }
 
