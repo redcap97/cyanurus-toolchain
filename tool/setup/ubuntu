@@ -1,4 +1,4 @@
 #!/bin/sh
 
 sudo apt-get update
-sudo apt-get -y install texinfo libmpc-dev libglib2.0-dev
+sudo apt-get -y install texinfo libmpc-dev libglib2.0-dev cmake
