@@ -137,7 +137,7 @@ install-crt() {
   pushd cyanurus
   make -j${JOBS}
   make test
-  install -m 0644 build/src/user/crt/crt0.o ${INSTALL_PATH}/lib/gcc/${arch}/${GCC_VERSION}/crt0.o
+  install -m 0644 build/crt/crt0.o ${INSTALL_PATH}/lib/gcc/${arch}/${GCC_VERSION}/crt0.o
   popd
 }
 
