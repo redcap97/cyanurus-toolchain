@@ -25,7 +25,7 @@ QEMU_URL="git://git.qemu.org/qemu.git"
 MUSL_URL="git://git.musl-libc.org/musl"
 
 # tarball
-BINUTILS_URL="http://ftp.gnu.org/gnu/binutils/binutils-2.24.tar.bz2"
+BINUTILS_URL="http://ftp.gnu.org/gnu/binutils/binutils-2.25.tar.bz2"
 GCC_URL="http://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.bz2"
 GDB_URL="http://ftp.gnu.org/gnu/gdb/gdb-7.8.tar.xz"
 UTIL_LINUX_URL="http://ftp.kernel.org/pub/linux/utils/util-linux/v2.25/util-linux-2.25.2.tar.xz"
@@ -87,6 +87,12 @@ fetch-clang() {
   fi
 
   cp -r ${cache} llvm
+}
+
+patch-binutils() {
+  pushd binutils
+  sed -i -e 's/^\(TEXT_START_ADDR\)=.*$/\1=0x10000/' ld/emulparams/armelf.sh
+  popd
 }
 
 install-binutils() {
@@ -190,6 +196,8 @@ mkdir ${BUILD_PATH}
 pushd ${BUILD_PATH}
 
 fetch-tarball ${BINUTILS_URL}   binutils
+patch-binutils
+
 fetch-tarball ${GCC_URL}        gcc
 fetch-tarball ${GDB_URL}        gdb
 fetch-tarball ${UTIL_LINUX_URL} util-linux
