@@ -10,7 +10,7 @@ JOBS="$(grep processor /proc/cpuinfo | wc -l)"
 BUILD_OPTION="--prefix=${INSTALL_PATH}"
 
 GCC_VERSION="4.9.2"
-LLVM_VERSION="350"
+LLVM_VERSION="351"
 QEMU_VERSION="${QEMU_VERSION:-v2.1.2}"
 MUSL_VERSION="${MUSL_VERSION:-v1.1.5}"
 
