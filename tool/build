@@ -27,7 +27,7 @@ MUSL_URL="git://git.musl-libc.org/musl"
 # tarball
 BINUTILS_URL="http://ftp.gnu.org/gnu/binutils/binutils-2.25.tar.bz2"
 GCC_URL="http://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.bz2"
-GDB_URL="http://ftp.gnu.org/gnu/gdb/gdb-7.8.tar.xz"
+GDB_URL="http://ftp.gnu.org/gnu/gdb/gdb-7.8.2.tar.xz"
 UTIL_LINUX_URL="http://ftp.kernel.org/pub/linux/utils/util-linux/v2.25/util-linux-2.25.2.tar.xz"
 RUBY_URL="http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.0.tar.gz"
 
