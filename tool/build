@@ -147,12 +147,6 @@ install-crt() {
   popd
 }
 
-patch-musl() {
-  pushd musl
-  git revert -n 19a1fe6
-  popd
-}
-
 install-musl() {
   local arch=$1
 
@@ -212,8 +206,6 @@ fetch-tarball ${RUBY_URL}       ruby
 fetch-git-repository ${CYANURUS_URL} cyanurus master
 fetch-git-repository ${QEMU_URL}     qemu     ${QEMU_VERSION}
 fetch-git-repository ${MUSL_URL}     musl     ${MUSL_VERSION}
-
-[ "${MUSL_VERSION}" = "master" ] && patch-musl
 
 if [ -n "${USE_CLANG}" ]; then
   fetch-clang
