@@ -2,7 +2,7 @@
 
 set -ex
 
-BUILD_ID="$(cat /dev/urandom | tr -dc '[:alnum:]' | head -c 10)"
+BUILD_ID="$(cat /dev/urandom | tr -dc '[:alnum:]' | head -c 10 2>/dev/null)"
 BUILD_PATH="/tmp/cyanurus-$$-${BUILD_ID}"
 INSTALL_PATH="/opt/cyanurus"
 CACHE_PATH="/tmp/cyanurus-cache"
