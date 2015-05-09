@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+
+set -exu
+
+SCRIPT_DIR=$(cd $(dirname $0); pwd)
+BUILD_PATH="/tmp/cyanurus-rootfs"
+INSTALL_PATH="${BUILD_PATH}/rootfs"
+BUILD_OPTION="--prefix=${INSTALL_PATH}"
+
+# git
+DASH_URL="git://git.kernel.org/pub/scm/utils/dash/dash.git"
+
+# tarball
+COREUTILS_URL="http://ftp.gnu.org/gnu/coreutils/coreutils-8.23.tar.xz"
+
+setup-dash() {
+  local name="dash"
+
+  git clone ${DASH_URL} ${name}
+  pushd ${name}
+  patch -p1 < ${SCRIPT_DIR}/patch/${name}.patch
+  ./autogen.sh
+  CC="arm-cyanurus-eabi-gcc" CFLAGS="-Os" ./configure ${BUILD_OPTION} --host=$(uname -m)-linux-gnu
+  popd
+}
+
+setup-coreutils() {
+  local name="coreutils"
+  local file="$(basename ${COREUTILS_URL})"
+
+  wget ${COREUTILS_URL} --no-verbose -O ${file} && tar xf ${file} && rm ${file}
+  mv ${name}-* ${name}
+
+  pushd ${name}
+  git init && git add -A && git commit -m "first commit"
+  patch -p1 < ${SCRIPT_DIR}/patch/${name}.patch
+  CC="arm-cyanurus-eabi-gcc" CFLAGS="-Os" ./configure ${BUILD_OPTION} --host=$(uname -m)-linux-gnu --disable-nls
+  popd
+}
+
+mkdir -p ${BUILD_PATH}
+pushd ${BUILD_PATH}
+
+[ ! -d dash ]      && setup-dash
+[ ! -d coreutils ] && setup-coreutils
+
+rm -rf rootfs rootfs-image rootfs.img
+
+make -C dash install
+make -C coreutils install
+
+for file in rootfs/{bin/sh,sbin/init}; do
+  install -D -m 0755 rootfs/bin/dash ${file}
+done
+
+mkdir rootfs-image
+qemu-img create -f raw rootfs.img 64M
+mkfs.minix -3 rootfs.img
+
+sudo mount rootfs.img rootfs-image
+cp -r rootfs/* rootfs-image
+sudo umount rootfs-image
+
+popd

@@ -1,0 +1,13 @@
+diff --git a/src/cd.c b/src/cd.c
+index a4e024d..bcdd2e1 100644
+--- a/src/cd.c
++++ b/src/cd.c
+@@ -61,6 +61,8 @@
+ #include "show.h"
+ #include "cd.h"
+ 
++#define PATH_MAX 1024
++
+ #define CD_PHYSICAL 1
+ #define CD_PRINT 2
+ 
