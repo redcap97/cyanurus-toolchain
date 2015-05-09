@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -ex
+set -exu
 
 BUILD_ID="$(cat /dev/urandom | tr -dc '[:alnum:]' | head -c 10)"
 BUILD_PATH="/tmp/cyanurus-$$-${BUILD_ID}"
@@ -208,7 +208,7 @@ fetch-git-repository ${CYANURUS_URL} cyanurus master
 fetch-git-repository ${QEMU_URL}     qemu     ${QEMU_VERSION}
 fetch-git-repository ${MUSL_URL}     musl     ${MUSL_VERSION}
 
-if [ -n "${USE_CLANG}" ]; then
+if [[ -v USE_CLANG && -n $USE_CLANG ]]; then
   fetch-clang
   install-clang
 fi
