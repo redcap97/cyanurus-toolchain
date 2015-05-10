@@ -44,8 +44,6 @@ pushd ${BUILD_PATH}
 [ ! -d dash ]      && setup-dash
 [ ! -d coreutils ] && setup-coreutils
 
-rm -rf rootfs rootfs-image rootfs.img
-
 make -C dash install
 make -C coreutils install
 
@@ -53,12 +51,15 @@ for file in rootfs/{bin/sh,sbin/init}; do
   install -D -m 0755 rootfs/bin/dash ${file}
 done
 
-mkdir rootfs-image
+mkdir -p rootfs-image
 qemu-img create -f raw rootfs.img 64M
 mkfs.minix -3 rootfs.img
 
 sudo mount rootfs.img rootfs-image
 cp -r rootfs/* rootfs-image
 sudo umount rootfs-image
+
+cp ${BUILD_PATH}/rootfs.img ${SCRIPT_DIR}
+rm -rf rootfs rootfs-image rootfs.img
 
 popd

@@ -1,6 +1,6 @@
 INSTALL_PATH="/opt/cyanurus"
 
-.PHONY: all setup rootfs
+.PHONY: all setup rootfs clean
 
 all:
 	tool/build
@@ -10,3 +10,6 @@ setup:
 
 rootfs:
 	$(INSTALL_PATH)/bin/env rootfs/build
+
+clean:
+	rm -rf rootfs/rootfs.img
