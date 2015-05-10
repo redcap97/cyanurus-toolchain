@@ -5,7 +5,7 @@ set -exu
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
 BUILD_PATH="/tmp/cyanurus-rootfs"
 INSTALL_PATH="${BUILD_PATH}/rootfs"
-BUILD_OPTION="--prefix=${INSTALL_PATH}"
+BUILD_OPTION="--prefix=${INSTALL_PATH} --build=$(gcc -dumpmachine) --host=arm-cyanurus-eabi"
 
 # git
 DASH_URL="git://git.kernel.org/pub/scm/utils/dash/dash.git"
@@ -20,7 +20,7 @@ setup-dash() {
   pushd ${name}
   patch -p1 < ${SCRIPT_DIR}/patch/${name}.patch
   ./autogen.sh
-  CC="arm-cyanurus-eabi-gcc" CFLAGS="-Os" ./configure ${BUILD_OPTION} --host=$(uname -m)-linux-gnu
+  CFLAGS="-Os" ./configure ${BUILD_OPTION}
   popd
 }
 
@@ -34,7 +34,7 @@ setup-coreutils() {
   pushd ${name}
   git init && git add -A && git commit -m "first commit"
   patch -p1 < ${SCRIPT_DIR}/patch/${name}.patch
-  CC="arm-cyanurus-eabi-gcc" CFLAGS="-Os" ./configure ${BUILD_OPTION} --host=$(uname -m)-linux-gnu --disable-nls
+  CFLAGS="-Os" ./configure ${BUILD_OPTION} --disable-nls
   popd
 }
 
