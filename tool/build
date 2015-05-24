@@ -10,7 +10,7 @@ CACHE_PATH="/tmp/cyanurus-cache"
 JOBS="$(grep processor /proc/cpuinfo | wc -l)"
 BUILD_OPTION="--prefix=${INSTALL_PATH}"
 
-GCC_VERSION="4.9.2"
+GCC_VERSION="5.1.0"
 LLVM_VERSION="360"
 QEMU_VERSION="${QEMU_VERSION:-v2.3.0}"
 MUSL_VERSION="${MUSL_VERSION:-v1.1.8}"
