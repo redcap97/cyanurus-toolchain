@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+set -exu
+
+ROOT_PATH=$(cd $(dirname $0)/..; pwd)
+
+source ${ROOT_PATH}/script/lib/vars.bash
+source ${ROOT_PATH}/script/lib/cache.bash
+
+INSTALL_PATH="${BUILD_PATH}/rootfs"
+BUILD_OPTION="--prefix=${INSTALL_PATH} --build=$(gcc -dumpmachine) --host=arm-cyanurus-eabi"
+
+# git
+DASH_URL="git://git.kernel.org/pub/scm/utils/dash/dash.git"
+
+# tarball
+COREUTILS_URL="http://ftp.gnu.org/gnu/coreutils/coreutils-8.23.tar.xz"
+
+install-dash() {
+  pushd dash
+  patch -p1 < ${ROOT_PATH}/script/rootfs-patch/dash.patch
+  ./autogen.sh
+  CFLAGS="-Os" ./configure ${BUILD_OPTION}
+  make -j${JOBS}
+  make install
+  popd
+}
+
+install-coreutils() {
+  pushd coreutils
+  patch -p1 < ${ROOT_PATH}/script/rootfs-patch/coreutils.patch
+  CFLAGS="-Os" ./configure ${BUILD_OPTION} --disable-nls
+  make -j${JOBS}
+  make install
+  popd
+}
+
+create-rootfs-image() {
+  for file in rootfs/{bin/sh,sbin/init}; do
+    install -D -m 0755 rootfs/bin/dash ${file}
+  done
+
+  mkdir -p rootfs-image
+
+  qemu-img create -f raw rootfs.img 64M
+  mkfs.minix -3 rootfs.img
+
+  sudo mount rootfs.img rootfs-image
+  cp -r rootfs/* rootfs-image
+  sudo umount rootfs-image
+}
+
+mkdir -p ${CACHE_PATH}
+
+mkdir ${BUILD_PATH}
+pushd ${BUILD_PATH}
+
+fetch-tarball ${COREUTILS_URL} coreutils
+fetch-git-repository ${DASH_URL} dash master
+
+install-coreutils
+install-dash
+
+create-rootfs-image
+cp ${BUILD_PATH}/rootfs.img ${ROOT_PATH}/artifact
+
+popd
+rm -rf ${BUILD_PATH}
