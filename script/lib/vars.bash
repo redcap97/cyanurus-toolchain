@@ -1,3 +1,5 @@
+SERIAL="0"
+
 JOBS="$(grep processor /proc/cpuinfo | wc -l)"
 BUILD_ID="$(cat /dev/urandom | tr -dc '[:alnum:]' | head -c 10)"
 
