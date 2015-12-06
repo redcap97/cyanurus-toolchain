@@ -21,7 +21,7 @@ CLANG_URL="http://llvm.org/svn/llvm-project/cfe/tags/RELEASE_${LLVM_VERSION}/fin
 COMPILER_RT_URL="http://llvm.org/svn/llvm-project/compiler-rt/tags/RELEASE_${LLVM_VERSION}/final/"
 
 # git
-CYANURUS_URL="git@bitbucket.org:redcap97/cyanurus.git"
+CYANURUS_URL="https://github.com/redcap97/cyanurus.git"
 QEMU_URL="git://git.qemu.org/qemu.git"
 MUSL_URL="git://git.musl-libc.org/musl"
 
