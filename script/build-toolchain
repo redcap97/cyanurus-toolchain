@@ -30,7 +30,7 @@ BINUTILS_URL="http://ftp.gnu.org/gnu/binutils/binutils-2.25.1.tar.bz2"
 GCC_URL="http://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.bz2"
 GDB_URL="http://ftp.gnu.org/gnu/gdb/gdb-7.10.tar.xz"
 UTIL_LINUX_URL="http://ftp.kernel.org/pub/linux/utils/util-linux/v2.27/util-linux-2.27.1.tar.xz"
-RUBY_URL="http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.3.tar.gz"
+RUBY_URL="http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.4.tar.gz"
 
 export PATH=${INSTALL_PATH}/bin:${INSTALL_PATH}/sbin:$PATH
 
