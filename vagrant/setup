@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -exu
+
+git clone --recursive https://github.com/redcap97/cyanurus.git
+git clone --recursive https://github.com/redcap97/cyanurus-toolchain.git
+
+pushd cyanurus-toolchain
+script/setup/ubuntu
+make setup all rootfs
+popd
+
+pushd cyanurus
+/opt/cyanurus/bin/env make test clobber
+popd
+
+echo 'export PATH=/opt/cyanurus/bin:/opt/cyanurus/sbin:$PATH' >> ~/.bashrc

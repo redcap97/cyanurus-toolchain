@@ -1,1 +1,3 @@
 rootfs/rootfs.img
+vagrant/.bundle
+vagrant/.vagrant
