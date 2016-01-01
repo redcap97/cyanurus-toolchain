@@ -14,7 +14,7 @@ BUILD_OPTION="--prefix=${INSTALL_PATH} --build=$(gcc -dumpmachine) --host=arm-cy
 DASH_URL="git://git.kernel.org/pub/scm/utils/dash/dash.git"
 
 # tarball
-COREUTILS_URL="http://ftp.gnu.org/gnu/coreutils/coreutils-8.23.tar.xz"
+COREUTILS_URL="http://ftp.gnu.org/gnu/coreutils/coreutils-8.24.tar.xz"
 
 install-dash() {
   pushd dash
