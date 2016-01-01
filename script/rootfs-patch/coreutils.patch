@@ -1,143 +1,37 @@
 diff --git a/man/help2man b/man/help2man
-index bfeb989..a5f329f 100755
+index fe786ac..f001c6d 100755
 --- a/man/help2man
 +++ b/man/help2man
-@@ -26,6 +26,7 @@ use Getopt::Long;
- use Text::Tabs qw(expand);
- use POSIX qw(strftime setlocale LC_ALL);
- 
-+my $qemu = 'qemu-arm';
- my $this_program = 'help2man';
- my $this_version = '1.43.3';
- 
-@@ -700,7 +701,7 @@ sub get_option_value
+@@ -720,7 +720,7 @@ sub get_option_value
      my $value = join '',
  	map { s/ +$//; expand $_ }
  	map { dec $_ }
 -	`$prog $opt 2>$stderr`;
-+	`$qemu $prog $opt 2>$stderr`;
++	`qemu-arm $prog $opt 2>$stderr`;
  
      unless ($value)
      {
-diff --git a/src/fs-is-local.h b/src/fs-is-local.h
-index 2a7deee..6f41b14 100644
---- a/src/fs-is-local.h
-+++ b/src/fs-is-local.h
-@@ -4,111 +4,5 @@
- static inline int
- is_local_fs_type (unsigned long int magic)
- {
--  switch (magic)
--    {
--      case S_MAGIC_ADFS: return 1;
--      case S_MAGIC_AFFS: return 1;
--      case S_MAGIC_AFS: return 0;
--      case S_MAGIC_ANON_INODE_FS: return 1;
--      case S_MAGIC_AUFS: return 0;
--      case S_MAGIC_AUTOFS: return 1;
--      case S_MAGIC_BEFS: return 1;
--      case S_MAGIC_BDEVFS: return 1;
--      case S_MAGIC_BFS: return 1;
--      case S_MAGIC_BINFMTFS: return 1;
--      case S_MAGIC_BTRFS: return 1;
--      case S_MAGIC_CEPH: return 0;
--      case S_MAGIC_CGROUP: return 1;
--      case S_MAGIC_CIFS: return 0;
--      case S_MAGIC_CODA: return 0;
--      case S_MAGIC_COH: return 1;
--      case S_MAGIC_CONFIGFS: return 1;
--      case S_MAGIC_CRAMFS: return 1;
--      case S_MAGIC_CRAMFS_WEND: return 1;
--      case S_MAGIC_DEBUGFS: return 1;
--      case S_MAGIC_DEVFS: return 1;
--      case S_MAGIC_DEVPTS: return 1;
--      case S_MAGIC_ECRYPTFS: return 1;
--      case S_MAGIC_EFIVARFS: return 1;
--      case S_MAGIC_EFS: return 1;
--      case S_MAGIC_EXOFS: return 1;
--      case S_MAGIC_EXT: return 1;
--      case S_MAGIC_EXT2: return 1;
--      case S_MAGIC_EXT2_OLD: return 1;
--      case S_MAGIC_F2FS: return 1;
--      case S_MAGIC_FAT: return 1;
--      case S_MAGIC_FHGFS: return 0;
--      case S_MAGIC_FUSEBLK: return 0;
--      case S_MAGIC_FUSECTL: return 0;
--      case S_MAGIC_FUTEXFS: return 1;
--      case S_MAGIC_GFS: return 0;
--      case S_MAGIC_GPFS: return 0;
--      case S_MAGIC_HFS: return 1;
--      case S_MAGIC_HFS_PLUS: return 1;
--      case S_MAGIC_HFS_X: return 1;
--      case S_MAGIC_HOSTFS: return 1;
--      case S_MAGIC_HPFS: return 1;
--      case S_MAGIC_HUGETLBFS: return 1;
--      case S_MAGIC_MTD_INODE_FS: return 1;
--      case S_MAGIC_INOTIFYFS: return 1;
--      case S_MAGIC_ISOFS: return 1;
--      case S_MAGIC_ISOFS_R_WIN: return 1;
--      case S_MAGIC_ISOFS_WIN: return 1;
--      case S_MAGIC_JFFS: return 1;
--      case S_MAGIC_JFFS2: return 1;
--      case S_MAGIC_JFS: return 1;
--      case S_MAGIC_KAFS: return 0;
--      case S_MAGIC_LOGFS: return 1;
--      case S_MAGIC_LUSTRE: return 0;
--      case S_MAGIC_MINIX: return 1;
--      case S_MAGIC_MINIX_30: return 1;
--      case S_MAGIC_MINIX_V2: return 1;
--      case S_MAGIC_MINIX_V2_30: return 1;
--      case S_MAGIC_MINIX_V3: return 1;
--      case S_MAGIC_MQUEUE: return 1;
--      case S_MAGIC_MSDOS: return 1;
--      case S_MAGIC_NCP: return 0;
--      case S_MAGIC_NFS: return 0;
--      case S_MAGIC_NFSD: return 0;
--      case S_MAGIC_NILFS: return 1;
--      case S_MAGIC_NTFS: return 1;
--      case S_MAGIC_OPENPROM: return 1;
--      case S_MAGIC_OCFS2: return 0;
--      case S_MAGIC_PANFS: return 0;
--      case S_MAGIC_PIPEFS: return 0;
--      case S_MAGIC_PROC: return 1;
--      case S_MAGIC_PSTOREFS: return 1;
--      case S_MAGIC_QNX4: return 1;
--      case S_MAGIC_QNX6: return 1;
--      case S_MAGIC_RAMFS: return 1;
--      case S_MAGIC_REISERFS: return 1;
--      case S_MAGIC_ROMFS: return 1;
--      case S_MAGIC_RPC_PIPEFS: return 1;
--      case S_MAGIC_SECURITYFS: return 1;
--      case S_MAGIC_SELINUX: return 1;
--      case S_MAGIC_SMACK: return 1;
--      case S_MAGIC_SMB: return 0;
--      case S_MAGIC_SNFS: return 0;
--      case S_MAGIC_SOCKFS: return 1;
--      case S_MAGIC_SQUASHFS: return 1;
--      case S_MAGIC_SYSFS: return 1;
--      case S_MAGIC_SYSV2: return 1;
--      case S_MAGIC_SYSV4: return 1;
--      case S_MAGIC_TMPFS: return 1;
--      case S_MAGIC_UBIFS: return 1;
--      case S_MAGIC_UDF: return 1;
--      case S_MAGIC_UFS: return 1;
--      case S_MAGIC_UFS_BYTESWAPPED: return 1;
--      case S_MAGIC_USBDEVFS: return 1;
--      case S_MAGIC_V9FS: return 1;
--      case S_MAGIC_VMHGFS: return 0;
--      case S_MAGIC_VXFS: return 0;
--      case S_MAGIC_VZFS: return 1;
--      case S_MAGIC_XENFS: return 1;
--      case S_MAGIC_XENIX: return 1;
--      case S_MAGIC_XFS: return 1;
--      case S_MAGIC_XIAFS: return 1;
--      case S_MAGIC_ZFS: return 1;
--      default: return -1;
--    }
-+  return 1;
- }
+diff --git a/src/fs.h b/src/fs.h
+index e1034f4..66a795a 100644
+--- a/src/fs.h
++++ b/src/fs.h
+@@ -2,6 +2,8 @@
+    Please send additions to bug-coreutils@gnu.org and meskes@debian.org.
+    This file is generated automatically from ./src/stat.c. */
+ 
++#define __linux__
++
+ #if defined __linux__
+ # define S_MAGIC_ADFS 0xADF5
+ # define S_MAGIC_AFFS 0xADFF
+@@ -110,3 +112,5 @@
+ #elif defined __GNU__
+ # include <hurd/hurd_types.h>
+ #endif
++
++#undef __linux__
 diff --git a/src/ioblksize.h b/src/ioblksize.h
-index 55aaeae..8892a1e 100644
+index 1b91995..21964a3 100644
 --- a/src/ioblksize.h
 +++ b/src/ioblksize.h
 @@ -70,7 +70,7 @@
@@ -149,3 +43,16 @@ index 55aaeae..8892a1e 100644
  static inline size_t
  io_blksize (struct stat sb)
  {
+diff --git a/src/sync.c b/src/sync.c
+index 5e1dbb8..3952311 100644
+--- a/src/sync.c
++++ b/src/sync.c
+@@ -33,6 +33,8 @@
+   proper_name ("Jim Meyering"),                 \
+   proper_name ("Giuseppe Scrivano")
+ 
++#undef HAVE_SYNCFS
++
+ #ifndef HAVE_SYNCFS
+ # define HAVE_SYNCFS 0
+ #endif
