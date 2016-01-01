@@ -30,6 +30,19 @@ index e1034f4..66a795a 100644
  #endif
 +
 +#undef __linux__
+diff --git a/src/ioblksize.h b/src/ioblksize.h
+index 1b91995..21964a3 100644
+--- a/src/ioblksize.h
++++ b/src/ioblksize.h
+@@ -70,7 +70,7 @@
+    In the future we could use the above method if available
+    and default to io_blksize() if not.
+  */
+-enum { IO_BUFSIZE = 128*1024 };
++enum { IO_BUFSIZE = 4*1024 };
+ static inline size_t
+ io_blksize (struct stat sb)
+ {
 diff --git a/src/sync.c b/src/sync.c
 index 5e1dbb8..3952311 100644
 --- a/src/sync.c
