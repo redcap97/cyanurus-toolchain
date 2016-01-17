@@ -36,6 +36,8 @@ install-coreutils() {
 }
 
 create-rootfs-image() {
+  install -d -m 0777 rootfs/tmp
+
   for file in rootfs/{bin/sh,sbin/init}; do
     install -D -m 0755 rootfs/bin/dash ${file}
   done
@@ -46,7 +48,7 @@ create-rootfs-image() {
   mkfs.minix -3 rootfs.img
 
   sudo mount rootfs.img rootfs-image
-  cp -r rootfs/* rootfs-image
+  cp -rp rootfs/* rootfs-image
   sudo umount rootfs-image
 }
 
