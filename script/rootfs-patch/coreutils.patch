@@ -56,3 +56,15 @@ index 5e1dbb8..3952311 100644
  #ifndef HAVE_SYNCFS
  # define HAVE_SYNCFS 0
  #endif
+diff --git a/src/tac.c b/src/tac.c
+index 57e7e76..5b33fc8 100644
+--- a/src/tac.c
++++ b/src/tac.c
+@@ -66,6 +66,7 @@ tac -r -s '.\|
+ # define DONT_UNLINK_WHILE_OPEN 1
+ #endif
+ 
++#define DONT_UNLINK_WHILE_OPEN 1
+ 
+ #ifndef DEFAULT_TMPDIR
+ # define DEFAULT_TMPDIR "/tmp"
