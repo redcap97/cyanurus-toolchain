@@ -52,6 +52,13 @@ patch-binutils() {
   popd
 }
 
+# Maybe a bug of qemu
+patch-qemu() {
+  pushd qemu
+  git revert 64c800f808748522727847b9cdc73412f22dffb9
+  popd
+}
+
 install-binutils() {
   local arch=$1
 
@@ -174,6 +181,7 @@ fetch-tarball ${RUBY_URL}       ruby
 
 fetch-git-repository ${CYANURUS_URL} cyanurus master
 fetch-git-repository ${QEMU_URL}     qemu     ${QEMU_VERSION}
+[ "${QEMU_VERSION}" = "master" ] && patch-qemu
 fetch-git-repository ${MUSL_URL}     musl     ${MUSL_VERSION}
 
 if [[ -v USE_CLANG && -n ${USE_CLANG} ]]; then
