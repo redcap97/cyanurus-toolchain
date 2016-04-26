@@ -29,7 +29,7 @@ MUSL_URL="git://git.musl-libc.org/musl"
 BINUTILS_URL="http://ftp.gnu.org/gnu/binutils/binutils-2.26.tar.bz2"
 GCC_URL="http://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.bz2"
 GDB_URL="http://ftp.gnu.org/gnu/gdb/gdb-7.11.tar.xz"
-UTIL_LINUX_URL="http://ftp.kernel.org/pub/linux/utils/util-linux/v2.27/util-linux-2.27.1.tar.xz"
+UTIL_LINUX_URL="http://ftp.kernel.org/pub/linux/utils/util-linux/v2.28/util-linux-2.28.tar.xz"
 RUBY_URL="http://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.0.tar.gz"
 
 export PATH=${INSTALL_PATH}/bin:${INSTALL_PATH}/sbin:$PATH
