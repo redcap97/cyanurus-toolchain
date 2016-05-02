@@ -14,6 +14,7 @@ GCC_VERSION="5.3.0"
 LLVM_VERSION="380"
 QEMU_VERSION="${QEMU_VERSION:-v2.5.0}"
 MUSL_VERSION="${MUSL_VERSION:-v1.1.8}"
+FUSE_MFS_VERSION="v0.3"
 
 # svn
 LLVM_URL="http://llvm.org/svn/llvm-project/llvm/tags/RELEASE_${LLVM_VERSION}/final/"
@@ -24,6 +25,7 @@ COMPILER_RT_URL="http://llvm.org/svn/llvm-project/compiler-rt/tags/RELEASE_${LLV
 CYANURUS_URL="https://github.com/redcap97/cyanurus.git"
 QEMU_URL="git://git.qemu.org/qemu.git"
 MUSL_URL="git://git.musl-libc.org/musl"
+FUSE_MFS_URL="https://github.com/redcap97/fuse-mfs.git"
 
 # tarball
 BINUTILS_URL="http://ftp.gnu.org/gnu/binutils/binutils-2.26.tar.bz2"
@@ -145,6 +147,13 @@ install-ruby() {
   popd
 }
 
+install-fuse-mfs() {
+  pushd fuse-mfs
+  make -j${JOBS}
+  make install PREFIX=${INSTALL_PATH}
+  popd
+}
+
 test-toolchain() {
   pushd cyanurus
   make clean
@@ -183,6 +192,7 @@ fetch-git-repository ${CYANURUS_URL} cyanurus master
 fetch-git-repository ${QEMU_URL}     qemu     ${QEMU_VERSION}
 [ "${QEMU_VERSION}" = "master" ] && patch-qemu
 fetch-git-repository ${MUSL_URL}     musl     ${MUSL_VERSION}
+fetch-git-repository ${FUSE_MFS_URL} fuse-mfs ${FUSE_MFS_VERSION}
 
 if [[ -v USE_CLANG && -n ${USE_CLANG} ]]; then
   fetch-clang
@@ -196,6 +206,7 @@ install-gdb      arm-none-eabi
 install-util-linux
 install-qemu
 install-ruby
+install-fuse-mfs
 
 install-binutils arm-cyanurus-eabi
 install-gcc      arm-cyanurus-eabi
