@@ -1,4 +1,4 @@
 #!/bin/sh
 
 sudo apt-get update
-sudo apt-get -y install make subversion wget build-essential libncurses5-dev libpython-dev autoconf libtool texinfo libmpc-dev libglib2.0-dev cmake libffi-dev libpixman-1-dev
+sudo apt-get -y install make subversion wget build-essential libncurses5-dev libpython-dev autoconf libtool texinfo libmpc-dev libglib2.0-dev cmake libffi-dev libpixman-1-dev pkg-config fuse libfuse-dev
