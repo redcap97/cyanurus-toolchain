@@ -45,11 +45,11 @@ create-rootfs-image() {
   mkdir -p rootfs-image
 
   qemu-img create -f raw rootfs.img 64M
-  mkfs.minix -3 rootfs.img
+  mkfs.mfs -B 4096 rootfs.img
 
-  sudo mount rootfs.img rootfs-image
+  fuse-mfs rootfs.img rootfs-image
   cp -rp rootfs/* rootfs-image
-  sudo umount rootfs-image
+  fusermount -u rootfs-image
 }
 
 mkdir -p ${CACHE_PATH}
