@@ -1,4 +1,4 @@
 #!/bin/sh
 
 sudo pacman -Syu
-sudo pacman -S --needed wget svn cmake
+sudo pacman -S --needed wget svn cmake fuse
