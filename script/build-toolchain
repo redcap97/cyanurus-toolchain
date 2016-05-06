@@ -31,7 +31,6 @@ FUSE_MFS_URL="https://github.com/redcap97/fuse-mfs.git"
 BINUTILS_URL="http://ftp.gnu.org/gnu/binutils/binutils-2.26.tar.bz2"
 GCC_URL="http://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.bz2"
 GDB_URL="http://ftp.gnu.org/gnu/gdb/gdb-7.11.tar.xz"
-UTIL_LINUX_URL="http://ftp.kernel.org/pub/linux/utils/util-linux/v2.28/util-linux-2.28.tar.xz"
 RUBY_URL="http://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.1.tar.gz"
 
 export PATH=${INSTALL_PATH}/bin:${INSTALL_PATH}/sbin:$PATH
@@ -123,14 +122,6 @@ install-musl() {
   popd
 }
 
-install-util-linux() {
-  pushd util-linux
-  ./configure ${BUILD_OPTION} --disable-all-programs --enable-minix --disable-bash-completion
-  make -j${JOBS}
-  make install
-  popd
-}
-
 install-qemu() {
   pushd qemu
   ./configure ${BUILD_OPTION} --target-list=arm-softmmu,arm-linux-user
@@ -185,7 +176,6 @@ patch-binutils
 
 fetch-tarball ${GCC_URL}        gcc
 fetch-tarball ${GDB_URL}        gdb
-fetch-tarball ${UTIL_LINUX_URL} util-linux
 fetch-tarball ${RUBY_URL}       ruby
 
 fetch-git-repository ${CYANURUS_URL} cyanurus master
@@ -203,7 +193,6 @@ install-binutils arm-none-eabi
 install-gcc      arm-none-eabi
 install-gdb      arm-none-eabi
 
-install-util-linux
 install-qemu
 install-ruby
 install-fuse-mfs
