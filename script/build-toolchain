@@ -14,7 +14,7 @@ GCC_VERSION="5.3.0"
 LLVM_VERSION="380"
 QEMU_VERSION="${QEMU_VERSION:-v2.5.1}"
 MUSL_VERSION="${MUSL_VERSION:-v1.1.8}"
-FUSE_MFS_VERSION="v0.3"
+FUSE_MFS_VERSION="v0.4"
 
 # svn
 LLVM_URL="http://llvm.org/svn/llvm-project/llvm/tags/RELEASE_${LLVM_VERSION}/final/"
