@@ -171,12 +171,12 @@ rm -rf ${INSTALL_PATH}/*
 mkdir ${BUILD_PATH}
 pushd ${BUILD_PATH}
 
-fetch-tarball ${BINUTILS_URL}   binutils
+fetch-tarball ${BINUTILS_URL} binutils
 patch-binutils
 
-fetch-tarball ${GCC_URL}        gcc
-fetch-tarball ${GDB_URL}        gdb
-fetch-tarball ${RUBY_URL}       ruby
+fetch-tarball ${GCC_URL}  gcc
+fetch-tarball ${GDB_URL}  gdb
+fetch-tarball ${RUBY_URL} ruby
 
 fetch-git-repository ${CYANURUS_URL} cyanurus master
 fetch-git-repository ${QEMU_URL}     qemu     ${QEMU_VERSION}
