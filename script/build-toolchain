@@ -10,7 +10,7 @@ source ${ROOT_PATH}/script/lib/cache.bash
 INSTALL_PATH="/opt/cyanurus"
 BUILD_OPTION="--prefix=${INSTALL_PATH}"
 
-GCC_VERSION="5.3.0"
+GCC_VERSION="6.1.0"
 LLVM_VERSION="380"
 QEMU_VERSION="${QEMU_VERSION:-v2.5.1}"
 MUSL_VERSION="${MUSL_VERSION:-v1.1.8}"
