@@ -57,6 +57,7 @@ patch-binutils() {
 patch-qemu() {
   pushd qemu
   git revert 64c800f808748522727847b9cdc73412f22dffb9
+  git revert 6459b94c26dd666badb3547fef1456992a08e60b
   popd
 }
 
