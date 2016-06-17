@@ -12,7 +12,7 @@ BUILD_OPTION="--prefix=${INSTALL_PATH}"
 
 GCC_VERSION="6.1.0"
 LLVM_VERSION="380"
-QEMU_VERSION="${QEMU_VERSION:-v2.5.1.1}"
+QEMU_VERSION="${QEMU_VERSION:-v2.6.0}"
 MUSL_VERSION="${MUSL_VERSION:-v1.1.8}"
 FUSE_MFS_VERSION="v0.4"
 
@@ -180,7 +180,7 @@ fetch-tarball ${RUBY_URL} ruby
 
 fetch-git-repository ${CYANURUS_URL} cyanurus master
 fetch-git-repository ${QEMU_URL}     qemu     ${QEMU_VERSION}
-[ "${QEMU_VERSION}" = "master" ] && patch-qemu
+patch-qemu
 fetch-git-repository ${MUSL_URL}     musl     ${MUSL_VERSION}
 fetch-git-repository ${FUSE_MFS_URL} fuse-mfs ${FUSE_MFS_VERSION}
 
