@@ -56,7 +56,7 @@ patch-binutils() {
 # Maybe a bug of qemu
 patch-qemu() {
   pushd qemu
-  git revert 64c800f808748522727847b9cdc73412f22dffb9
+  sed -i 's/\bqemu_chr_fe_write\b/qemu_chr_fe_write_all/' hw/char/pl011.c
   popd
 }
 
